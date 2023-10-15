@@ -37,14 +37,14 @@ export default async function TicketDetails({ params }) {
             </nav>
 
             {ticket.map(ticket => (
-                <div className="card"> 
-                <h3>{ticket.title}</h3>
-                <p>{ticket.body}</p>
-                <p>Created by {ticket.user_email}</p>
-                <div className={`pill ${ticket.priority}`}>
-                    Priority {ticket.priority}
+                <div key={ticket.id} className="card"> 
+                    <h3>{ticket.title}</h3>
+                    <p>{ticket.body}</p>
+                    <p>Created by {ticket.user_email}</p>
+                    <div className={`pill ${ticket.priority}`}>
+                        Priority {ticket.priority}
+                    </div>
                 </div>
-            </div>
             ))}
         </main>
     )
