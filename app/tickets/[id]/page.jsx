@@ -1,29 +1,34 @@
 import { notFound } from "next/navigation";
+import { tickets } from "@/data/tickets";
 
 export const dynamicParams = true;
 
-export async function getStaticParams() {
-    const res = await fetch('http://localhost:4000/tickets/');
+// export async function getStaticParams() {
+//     const res = await fetch('http://localhost:4000/tickets/');
 
-    const tickets = await res.json();
+//     const tickets = await res.json();
 
-    return tickets.map((ticket) => ({
-        id: ticket.id
-    }))
-}
+//     return tickets.map((ticket) => ({
+//         id: ticket.id
+//     }))
+// }
 
-async function getTicket(id) {
-    const res = await fetch('http://localhost:4000/tickets/' + id);
+function getTicket(id) {
+    // const res = await fetch('http://localhost:4000/tickets/' + id);
+    const ticket = tickets.filter(ticket => ticket.id === id);
 
-    if (!res.ok) {
-        notFound();
-    }
+    console.log(ticket);
 
-    return res.json();
+    // if (!res.ok) {
+    //     notFound();
+    // }
+
+    // return res.json();
+    return ticket;
 }
 
 export default async function TicketDetails({ params }) {
-    const ticket = await getTicket(params.id);
+    const ticket = getTicket(params.id);
 
     return (
         <main>
@@ -31,7 +36,8 @@ export default async function TicketDetails({ params }) {
                 <h2>Ticket details</h2>
             </nav>
 
-            <div className="card"> 
+            {ticket.map(ticket => (
+                <div className="card"> 
                 <h3>{ticket.title}</h3>
                 <p>{ticket.body}</p>
                 <p>Created by {ticket.user_email}</p>
@@ -39,6 +45,7 @@ export default async function TicketDetails({ params }) {
                     Priority {ticket.priority}
                 </div>
             </div>
+            ))}
         </main>
     )
 }
